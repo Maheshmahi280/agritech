@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - AgriConnect</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #2d5a27 0%, #4a7c43 100%);
+            min-height: 100vh;
+        }
+        
+        .auth-container {
+            min-height: calc(100vh - 80px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+        
+        .auth-card {
+            background: white;
+            border-radius: 15px;
+            padding: 2.5rem;
+            width: 100%;
+            max-width: 500px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+        
+        .auth-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .auth-header .icon {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .auth-header h1 {
+            color: #2d5a27;
+            margin-bottom: 0.5rem;
+        }
+        
+        .auth-header p {
+            color: #666;
+        }
+        /* Role Selection Tabs */
+        
+        .role-tabs {
+            display: flex;
+            margin-bottom: 1.5rem;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 2px solid #ddd;
+        }
+        
+        .role-tab {
+            flex: 1;
+            padding: 1rem;
+            text-align: center;
+            cursor: pointer;
+            background: #f8f9fa;
+            border: none;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        
+        .role-tab:first-child {
+            border-right: 1px solid #ddd;
+        }
+        
+        .role-tab.active-farmer {
+            background: linear-gradient(135deg, #4a7c43 0%, #2d5a27 100%);
+            color: white;
+        }
+        
+        .role-tab.active-restaurant {
+            background: linear-gradient(135deg, #e67e22 0%, #d35400 100%);
+            color: white;
+        }
+        
+        .role-tab:hover:not(.active-farmer):not(.active-restaurant) {
+            background: #e9ecef;
+        }
+        /* Form Styles */
+        
+        .auth-form .form-group {
+            margin-bottom: 1.25rem;
+        }
+        
+        .auth-form label {
+            display: block;
+            font-weight: 600;
+            color: #555;
+            margin-bottom: 0.5rem;
+        }
+        
+        .auth-form input,
+        .auth-form select {
+            width: 100%;
+            padding: 0.85rem 1rem;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        
+        .auth-form input:focus,
+        .auth-form select:focus {
+            outline: none;
+            border-color: #4a7c43;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        
+        .btn-register-farmer {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, #4a7c43 0%, #2d5a27 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-register-restaurant {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, #e67e22 0%, #d35400 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-register-farmer:hover,
+        .btn-register-restaurant:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .auth-footer {
+            text-align: center;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #eee;
+        }
+        
+        .auth-footer p {
+            color: #666;
+        }
+        
+        .auth-footer a {
+            color: #4a7c43;
+            font-weight: 600;
+            text-decoration: none;
+        }
+        
+        .auth-footer a:hover {
+            text-decoration: underline;
+        }
+        /* Alert Box */
+        
+        .alert {
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            display: none;
+        }
+        
+        .alert-warning {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffc107;
+        }
+        
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #28a745;
+        }
+        /* Terms Checkbox */
+        
+        .terms-group {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+        }
+        
+        .terms-group input[type="checkbox"] {
+            width: auto;
+            margin-top: 0.25rem;
+        }
+        
+        .terms-group label {
+            font-weight: normal;
+            font-size: 0.9rem;
+        }
+        
+        .terms-group a {
+            color: #4a7c43;
+        }
+        
+        @media (max-width: 500px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            .auth-card {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <header>
+        <div class="logo">
+            🌾 Agri<span>Connect</span>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="login.html">Login</a></li>
+                <li><a href="register.html">Register</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Registration Form -->
+    <div class="auth-container">
+        <div class="auth-card">
+            <div class="auth-header">
+                <div class="icon">📝</div>
+                <h1>Create Account</h1>
+                <p>Join AgriConnect today!</p>
+            </div>
+
+            <!-- Alert for already registered -->
+            <div class="alert alert-warning" id="already-registered" style="display: none;">
+                ⚠️ This email is already registered. <a href="login.html">Login instead</a>
+            </div>
+
+            <!-- Role Selection Tabs -->
+            <div class="role-tabs">
+                <button type="button" class="role-tab active-farmer" id="farmer-tab">
+                    👨‍🌾 Farmer
+                </button>
+                <button type="button" class="role-tab" id="restaurant-tab">
+                    🍽️ Restaurant
+                </button>
+            </div>
+
+            <!-- Farmer Registration Form -->
+            <form class="auth-form" id="farmer-form" action="farmer_dashboard.html" method="get">
+                <input type="hidden" name="role" value="farmer">
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="farmer-firstname">First Name *</label>
+                        <input type="text" id="farmer-firstname" name="firstname" placeholder="Enter first name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="farmer-lastname">Last Name *</label>
+                        <input type="text" id="farmer-lastname" name="lastname" placeholder="Enter last name" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="farmer-email">Email Address *</label>
+                    <input type="email" id="farmer-email" name="email" placeholder="farmer@example.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="farmer-phone">Phone Number *</label>
+                    <input type="tel" id="farmer-phone" name="phone" placeholder="+91 98765 43210" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="farmer-farm">Farm Name</label>
+                    <input type="text" id="farmer-farm" name="farm_name" placeholder="Your farm name">
+                </div>
+
+                <div class="form-group">
+                    <label for="farmer-location">Farm Location *</label>
+                    <input type="text" id="farmer-location" name="location" placeholder="Village, District, State" required>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="farmer-password">Password *</label>
+                        <input type="password" id="farmer-password" name="password" placeholder="Min. 8 characters" minlength="8" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="farmer-confirm">Confirm Password *</label>
+                        <input type="password" id="farmer-confirm" name="confirm_password" placeholder="Confirm password" required>
+                    </div>
+                </div>
+
+                <div class="form-group terms-group">
+                    <input type="checkbox" id="farmer-terms" name="terms" required>
+                    <label for="farmer-terms">I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></label>
+                </div>
+
+                <button type="submit" class="btn-register-farmer">🌱 Register as Farmer</button>
+            </form>
+
+            <!-- Restaurant Registration Form (Hidden by default) -->
+            <form class="auth-form" id="restaurant-form" action="restaurent_dash.html" method="get" style="display: none;">
+                <input type="hidden" name="role" value="restaurant">
+
+                <div class="form-group">
+                    <label for="rest-name">Restaurant Name *</label>
+                    <input type="text" id="rest-name" name="restaurant_name" placeholder="Your restaurant name" required>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="rest-owner">Owner Name *</label>
+                        <input type="text" id="rest-owner" name="owner_name" placeholder="Owner's full name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="rest-type">Restaurant Type *</label>
+                        <select id="rest-type" name="restaurant_type" required>
+                            <option value="">Select type</option>
+                            <option value="fine-dining">Fine Dining</option>
+                            <option value="casual">Casual Dining</option>
+                            <option value="cafe">Cafe</option>
+                            <option value="fast-food">Fast Food</option>
+                            <option value="catering">Catering Service</option>
+                            <option value="hotel">Hotel Restaurant</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="rest-email">Email Address *</label>
+                    <input type="email" id="rest-email" name="email" placeholder="restaurant@example.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="rest-phone">Phone Number *</label>
+                    <input type="tel" id="rest-phone" name="phone" placeholder="+91 98765 43210" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="rest-address">Restaurant Address *</label>
+                    <input type="text" id="rest-address" name="address" placeholder="Full address with pincode" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="rest-gst">GST Number (Optional)</label>
+                    <input type="text" id="rest-gst" name="gst" placeholder="22AAAAA0000A1Z5">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="rest-password">Password *</label>
+                        <input type="password" id="rest-password" name="password" placeholder="Min. 8 characters" minlength="8" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="rest-confirm">Confirm Password *</label>
+                        <input type="password" id="rest-confirm" name="confirm_password" placeholder="Confirm password" required>
+                    </div>
+                </div>
+
+                <div class="form-group terms-group">
+                    <input type="checkbox" id="rest-terms" name="terms" required>
+                    <label for="rest-terms">I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></label>
+                </div>
+
+                <button type="submit" class="btn-register-restaurant">🍽️ Register as Restaurant</button>
+            </form>
+
+            <div class="auth-footer">
+                <p>Already have an account? <a href="login.html">Login here</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Simple tab switching for role selection
+        const farmerTab = document.getElementById('farmer-tab');
+        const restaurantTab = document.getElementById('restaurant-tab');
+        const farmerForm = document.getElementById('farmer-form');
+        const restaurantForm = document.getElementById('restaurant-form');
+
+        farmerTab.addEventListener('click', function() {
+            farmerTab.classList.add('active-farmer');
+            restaurantTab.classList.remove('active-restaurant');
+            farmerForm.style.display = 'block';
+            restaurantForm.style.display = 'none';
+        });
+
+        restaurantTab.addEventListener('click', function() {
+            restaurantTab.classList.add('active-restaurant');
+            farmerTab.classList.remove('active-farmer');
+            restaurantForm.style.display = 'block';
+            farmerForm.style.display = 'none';
+        });
+
+        // Check URL parameter for pre-selected role
+        const urlParams = new URLSearchParams(window.location.search);
+        const role = urlParams.get('role');
+        if (role === 'restaurant') {
+            restaurantTab.click();
+        }
+
+        // Simple demo: Check for "already registered" (simulated with localStorage)
+        const farmerEmail = document.getElementById('farmer-email');
+        const restEmail = document.getElementById('rest-email');
+        const alertBox = document.getElementById('already-registered');
+
+        // Demo registered emails (in real app, this would be server-side)
+        const registeredEmails = ['farmer@demo.com', 'restaurant@demo.com', 'test@test.com'];
+
+        function checkEmail(email) {
+            if (registeredEmails.includes(email.toLowerCase())) {
+                alertBox.style.display = 'block';
+            } else {
+                alertBox.style.display = 'none';
+            }
+        }
+
+        farmerEmail.addEventListener('blur', function() {
+            checkEmail(this.value);
+        });
+
+        restEmail.addEventListener('blur', function() {
+            checkEmail(this.value);
+        });
+    </script>
+</body>
+
+</html>

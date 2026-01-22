@@ -1,0 +1,252 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgriConnect - Farm to Restaurant Platform</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <style>
+        .landing-hero {
+            background: linear-gradient(135deg, #2d5a27 0%, #4a7c43 100%);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .hero-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem;
+        }
+        
+        .hero-content h1 {
+            color: white;
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .hero-content .tagline {
+            font-size: 1.3rem;
+            opacity: 0.9;
+            margin-bottom: 3rem;
+            max-width: 600px;
+        }
+        
+        .role-selection {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 3rem;
+        }
+        
+        .role-card {
+            background: white;
+            border-radius: 15px;
+            padding: 2.5rem 2rem;
+            width: 280px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease;
+        }
+        
+        .role-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .role-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+        
+        .role-card h2 {
+            color: #2d5a27;
+            margin-bottom: 0.5rem;
+        }
+        
+        .role-card p {
+            color: #666;
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+        }
+        
+        .role-card .btn {
+            width: 100%;
+            padding: 0.75rem 1.5rem;
+            display: inline-block;
+            text-align: center;
+        }
+        
+        .btn-farmer {
+            background: linear-gradient(135deg, #4a7c43 0%, #2d5a27 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+        }
+        
+        .btn-restaurant {
+            background: linear-gradient(135deg, #e67e22 0%, #d35400 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+        }
+        
+        .login-prompt {
+            margin-top: 2rem;
+            font-size: 1.1rem;
+        }
+        
+        .login-prompt a {
+            color: #90ee90;
+            font-weight: 600;
+            text-decoration: underline;
+        }
+        
+        .features-section {
+            background: #f5f5dc;
+            padding: 4rem 2rem;
+        }
+        
+        .features-section h2 {
+            text-align: center;
+            color: #2d5a27;
+            margin-bottom: 3rem;
+            font-size: 2rem;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .feature-item {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .feature-item .icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .feature-item h3 {
+            color: #2d5a27;
+            margin-bottom: 0.5rem;
+        }
+        
+        .feature-item p {
+            color: #666;
+            font-size: 0.95rem;
+        }
+        
+        .landing-footer {
+            background: #1a3d17;
+            color: white;
+            text-align: center;
+            padding: 1.5rem;
+        }
+        
+        @media (max-width: 768px) {
+            .hero-content h1 {
+                font-size: 2rem;
+            }
+            .role-selection {
+                flex-direction: column;
+                align-items: center;
+            }
+            .role-card {
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <section class="landing-hero">
+        <header>
+            <div class="logo">
+                🌾 Agri<span>Connect</span>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="{% url 'home' %}">Home</a></li>
+                    <li><a href="{% url 'login' %}">Login</a></li>
+                    <li><a href="{% url 'register' %}">Register</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <div class="hero-content">
+            <h1>🌾 Welcome to AgriConnect</h1>
+            <p class="tagline">Connecting Local Farmers Directly with Restaurants. Fresh Produce, Fair Prices, Zero Middlemen.</p>
+
+            <div class="role-selection">
+                <div class="role-card">
+                    <div class="role-icon">👨‍🌾</div>
+                    <h2>I'm a Farmer</h2>
+                    <p>List your fresh produce and connect with restaurants in your area. Get fair prices for your hard work.</p>
+                    <a href="{% url 'register_farmer' %}" class="btn btn-farmer">Register as Farmer</a>
+                </div>
+
+                <div class="role-card">
+                    <div class="role-icon">🍽️</div>
+                    <h2>I'm a Restaurant</h2>
+                    <p>Source fresh, local ingredients directly from farmers. Quality produce at competitive prices.</p>
+                    <a href="{% url 'register_restaurant' %}" class="btn btn-restaurant">Register as Restaurant</a>
+                </div>
+            </div>
+
+            <p class="login-prompt">Already have an account? <a href="{% url 'login' %}">Login here</a></p>
+        </div>
+    </section>
+
+    <section class="features-section">
+        <h2>Why Choose AgriConnect?</h2>
+        <div class="features-grid">
+            <div class="feature-item">
+                <div class="icon">🤝</div>
+                <h3>Direct Connection</h3>
+                <p>Connect farmers and restaurants directly without middlemen, ensuring better prices for both.</p>
+            </div>
+            <div class="feature-item">
+                <div class="icon">🥬</div>
+                <h3>Fresh Produce</h3>
+                <p>Get farm-fresh vegetables, fruits, and grains delivered straight from local farms.</p>
+            </div>
+            <div class="feature-item">
+                <div class="icon">💰</div>
+                <h3>Fair Pricing</h3>
+                <p>Farmers get better returns, restaurants get competitive prices. Win-win for everyone!</p>
+            </div>
+            <div class="feature-item">
+                <div class="icon">📱</div>
+                <h3>Easy to Use</h3>
+                <p>Simple interface to list produce, browse inventory, and place orders in minutes.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer class="landing-footer">
+        <p>🌾 AgriConnect - Bridging Farmers and Restaurants | © 2026 All Rights Reserved</p>
+    </footer>
+</body>
+
+</html>

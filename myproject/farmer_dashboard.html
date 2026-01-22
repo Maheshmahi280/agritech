@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farmer Dashboard - AgriConnect</title>
+    <style>
+        /* Reset and Base Styles */
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5dc;
+            color: #333;
+            line-height: 1.6;
+        }
+        /* Header Styles */
+        
+        header {
+            background: linear-gradient(135deg, #2d5a27 0%, #4a7c43 100%);
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .logo span {
+            color: #90ee90;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+        
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+        
+        nav a:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        /* Main Container */
+        
+        main {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        /* Welcome Section */
+        
+        .welcome-section {
+            background: white;
+            padding: 1.5rem 2rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            border-left: 5px solid #4a7c43;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .welcome-section h1 {
+            color: #2d5a27;
+            margin-bottom: 0.5rem;
+        }
+        /* Card Styles */
+        
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card h2 {
+            color: #2d5a27;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #90ee90;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        /* Form Styles */
+        
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .form-group label {
+            font-weight: 600;
+            color: #555;
+            margin-bottom: 0.5rem;
+        }
+        
+        .form-group input,
+        .form-group select {
+            padding: 0.75rem 1rem;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #4a7c43;
+        }
+        /* Button Styles */
+        
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #4a7c43 0%, #2d5a27 100%);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(45, 90, 39, 0.4);
+        }
+        
+        .btn-accept {
+            background: #28a745;
+            color: white;
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+        }
+        
+        .btn-accept:hover {
+            background: #218838;
+        }
+        
+        .btn-reject {
+            background: #dc3545;
+            color: white;
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+        }
+        
+        .btn-reject:hover {
+            background: #c82333;
+        }
+        /* Table Styles */
+        
+        .table-container {
+            overflow-x: auto;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+        
+        th,
+        td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        th {
+            background: #f8f9fa;
+            color: #2d5a27;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+        }
+        
+        tr:hover {
+            background: #f5f5f5;
+        }
+        /* Status Badges */
+        
+        .status {
+            padding: 0.35rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+        
+        .status-available {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .status-sold {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .status-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+        /* Action Buttons Container */
+        
+        .action-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+        /* Footer */
+        
+        footer {
+            background: #2d5a27;
+            color: white;
+            text-align: center;
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+        /* Responsive Design */
+        
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 1rem;
+            }
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            .action-buttons {
+                flex-direction: column;
+            }
+            th,
+            td {
+                padding: 0.75rem 0.5rem;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header with Site Name and Navigation -->
+    <header>
+        <div class="logo">
+            🌾 Agri<span>Connect</span>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="farmer_dashboard.html">Farmer Dashboard</a></li>
+                <li><a href="restaurent_dash.html">Restaurant Dashboard</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Welcome Section -->
+        <section class="welcome-section">
+            <h1>👨‍🌾 Welcome, Farmer!</h1>
+            <p>Manage your produce listings and connect directly with restaurants in your area.</p>
+        </section>
+
+        <!-- Section: Add Produce Form -->
+        <section class="card">
+            <h2>🌿 Add New Produce</h2>
+            <form action="#" method="post">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="produce-name">Produce Name</label>
+                        <input type="text" id="produce-name" name="produce_name" placeholder="e.g., Tomatoes" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="quantity">Quantity (kg)</label>
+                        <input type="number" id="quantity" name="quantity" placeholder="e.g., 100" min="1" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="price">Price per kg (₹)</label>
+                        <input type="number" id="price" name="price" placeholder="e.g., 50" min="1" step="0.01" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="availability-date">Availability Date</label>
+                        <input type="date" id="availability-date" name="availability_date" required>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">➕ Add Produce</button>
+            </form>
+        </section>
+
+        <!-- Section: My Produce Listings Table -->
+        <section class="card">
+            <h2>📦 My Produce Listings</h2>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Produce</th>
+                            <th>Quantity (kg)</th>
+                            <th>Price (₹/kg)</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>🍅 Tomatoes</td>
+                            <td>150</td>
+                            <td>₹45</td>
+                            <td><span class="status status-available">Available</span></td>
+                        </tr>
+                        <tr>
+                            <td>🥔 Potatoes</td>
+                            <td>200</td>
+                            <td>₹30</td>
+                            <td><span class="status status-available">Available</span></td>
+                        </tr>
+                        <tr>
+                            <td>🥕 Carrots</td>
+                            <td>80</td>
+                            <td>₹55</td>
+                            <td><span class="status status-pending">Pending</span></td>
+                        </tr>
+                        <tr>
+                            <td>🧅 Onions</td>
+                            <td>0</td>
+                            <td>₹40</td>
+                            <td><span class="status status-sold">Sold Out</span></td>
+                        </tr>
+                        <tr>
+                            <td>🥬 Spinach</td>
+                            <td>50</td>
+                            <td>₹35</td>
+                            <td><span class="status status-available">Available</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Section: Incoming Requests Table -->
+        <section class="card">
+            <h2>📩 Incoming Requests from Restaurants</h2>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Restaurant Name</th>
+                            <th>Produce</th>
+                            <th>Quantity Requested (kg)</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>🍽️ Green Leaf Bistro</td>
+                            <td>Tomatoes</td>
+                            <td>50</td>
+                            <td><span class="status status-pending">Pending</span></td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="btn btn-accept">✓ Accept</button>
+                                    <button class="btn btn-reject">✗ Reject</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>🍽️ Farm Fresh Kitchen</td>
+                            <td>Potatoes</td>
+                            <td>100</td>
+                            <td><span class="status status-pending">Pending</span></td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="btn btn-accept">✓ Accept</button>
+                                    <button class="btn btn-reject">✗ Reject</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>🍽️ The Veggie Table</td>
+                            <td>Carrots</td>
+                            <td>30</td>
+                            <td><span class="status status-available">Accepted</span></td>
+                            <td>
+                                <span style="color: #28a745; font-weight: 600;">✓ Confirmed</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>🍽️ Organic Eats</td>
+                            <td>Spinach</td>
+                            <td>25</td>
+                            <td><span class="status status-sold">Rejected</span></td>
+                            <td>
+                                <span style="color: #dc3545; font-weight: 600;">✗ Declined</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>🌾 AgriConnect - Bridging Farmers and Restaurants | © 2026 All Rights Reserved</p>
+    </footer>
+</body>
+
+</html>

@@ -1,0 +1,327 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - AgriConnect</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <style>
+        body {
+            background: linear-gradient(135deg, #2d5a27 0%, #4a7c43 100%);
+            min-height: 100vh;
+        }
+        
+        .auth-container {
+            min-height: calc(100vh - 80px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+        
+        .auth-card {
+            background: white;
+            border-radius: 15px;
+            padding: 2.5rem;
+            width: 100%;
+            max-width: 420px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+        
+        .auth-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .auth-header .icon {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .auth-header h1 {
+            color: #2d5a27;
+            margin-bottom: 0.5rem;
+        }
+        
+        .auth-header p {
+            color: #666;
+        }
+        
+        .role-tabs {
+            display: flex;
+            margin-bottom: 1.5rem;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 2px solid #ddd;
+        }
+        
+        .role-tab {
+            flex: 1;
+            padding: 1rem;
+            text-align: center;
+            cursor: pointer;
+            background: #f8f9fa;
+            border: none;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        
+        .role-tab:first-child {
+            border-right: 1px solid #ddd;
+        }
+        
+        .role-tab.active-farmer {
+            background: linear-gradient(135deg, #4a7c43 0%, #2d5a27 100%);
+            color: white;
+        }
+        
+        .role-tab.active-restaurant {
+            background: linear-gradient(135deg, #e67e22 0%, #d35400 100%);
+            color: white;
+        }
+        
+        .role-tab:hover:not(.active-farmer):not(.active-restaurant) {
+            background: #e9ecef;
+        }
+        
+        .auth-form .form-group {
+            margin-bottom: 1.25rem;
+        }
+        
+        .auth-form label {
+            display: block;
+            font-weight: 600;
+            color: #555;
+            margin-bottom: 0.5rem;
+        }
+        
+        .auth-form input {
+            width: 100%;
+            padding: 0.85rem 1rem;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        
+        .auth-form input:focus {
+            outline: none;
+            border-color: #4a7c43;
+        }
+        
+        .form-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+        }
+        
+        .remember-me {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .remember-me input {
+            width: auto;
+        }
+        
+        .forgot-password {
+            color: #4a7c43;
+            text-decoration: none;
+        }
+        
+        .btn-login-farmer {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, #4a7c43 0%, #2d5a27 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-login-restaurant {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, #e67e22 0%, #d35400 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-login-farmer:hover,
+        .btn-login-restaurant:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .auth-footer {
+            text-align: center;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #eee;
+        }
+        
+        .auth-footer p {
+            color: #666;
+            margin-bottom: 0.5rem;
+        }
+        
+        .auth-footer a {
+            color: #4a7c43;
+            font-weight: 600;
+            text-decoration: none;
+        }
+        
+        .alert {
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+        }
+        
+        .alert-danger {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .alert-info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+        
+        @media (max-width: 500px) {
+            .auth-card {
+                padding: 1.5rem;
+            }
+            .form-options {
+                flex-direction: column;
+                gap: 0.75rem;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="logo">
+            🌾 Agri<span>Connect</span>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'login' %}">Login</a></li>
+                <li><a href="{% url 'register' %}">Register</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="auth-container">
+        <div class="auth-card">
+            <div class="auth-header">
+                <div class="icon">🔐</div>
+                <h1>Welcome Back!</h1>
+                <p>Login to your AgriConnect account</p>
+            </div>
+
+            <!-- Display messages -->
+            {% if messages %} {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">
+                {{ message }}
+            </div>
+            {% endfor %} {% endif %}
+
+            <!-- Role Selection Tabs -->
+            <div class="role-tabs">
+                <button type="button" class="role-tab active-farmer" id="farmer-tab" onclick="switchRole('farmer')">
+                    👨‍🌾 Farmer
+                </button>
+                <button type="button" class="role-tab" id="restaurant-tab" onclick="switchRole('restaurant')">
+                    🍽️ Restaurant
+                </button>
+            </div>
+
+            <!-- Farmer Login Form -->
+            <form class="auth-form" id="farmer-login-form" method="post" action="{% url 'login' %}">
+                {% csrf_token %}
+                <input type="hidden" name="role" value="farmer" id="role-input">
+
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" placeholder="farmer@example.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                </div>
+
+                <div class="form-options">
+                    <label class="remember-me">
+                        <input type="checkbox" name="remember"> Remember me
+                    </label>
+                    <a href="#" class="forgot-password">Forgot Password?</a>
+                </div>
+
+                <button type="submit" class="btn-login-farmer" id="login-btn">🌱 Login as Farmer</button>
+            </form>
+
+            <div class="auth-footer">
+                <p>Don't have an account?</p>
+                <p>
+                    <a href="{% url 'register_farmer' %}">Register as Farmer</a> |
+                    <a href="{% url 'register_restaurant' %}">Register as Restaurant</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function switchRole(role) {
+            const farmerTab = document.getElementById('farmer-tab');
+            const restaurantTab = document.getElementById('restaurant-tab');
+            const roleInput = document.getElementById('role-input');
+            const loginBtn = document.getElementById('login-btn');
+
+            if (role === 'farmer') {
+                farmerTab.classList.add('active-farmer');
+                restaurantTab.classList.remove('active-restaurant');
+                roleInput.value = 'farmer';
+                loginBtn.className = 'btn-login-farmer';
+                loginBtn.innerHTML = '🌱 Login as Farmer';
+            } else {
+                restaurantTab.classList.add('active-restaurant');
+                farmerTab.classList.remove('active-farmer');
+                roleInput.value = 'restaurant';
+                loginBtn.className = 'btn-login-restaurant';
+                loginBtn.innerHTML = '🍽️ Login as Restaurant';
+            }
+        }
+    </script>
+</body>
+
+</html>

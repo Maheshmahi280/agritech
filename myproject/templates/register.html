@@ -1,0 +1,395 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - AgriConnect</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <style>
+        body {
+            background: linear-gradient(135deg, #2d5a27 0%, #4a7c43 100%);
+            min-height: 100vh;
+        }
+        
+        .auth-container {
+            min-height: calc(100vh - 80px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+        
+        .auth-card {
+            background: white;
+            border-radius: 15px;
+            padding: 2.5rem;
+            width: 100%;
+            max-width: 500px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+        
+        .auth-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .auth-header .icon {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .auth-header h1 {
+            color: #2d5a27;
+            margin-bottom: 0.5rem;
+        }
+        
+        .auth-header p {
+            color: #666;
+        }
+        
+        .role-tabs {
+            display: flex;
+            margin-bottom: 1.5rem;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 2px solid #ddd;
+        }
+        
+        .role-tab {
+            flex: 1;
+            padding: 1rem;
+            text-align: center;
+            cursor: pointer;
+            background: #f8f9fa;
+            border: none;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s;
+            text-decoration: none;
+            color: #333;
+        }
+        
+        .role-tab:first-child {
+            border-right: 1px solid #ddd;
+        }
+        
+        .role-tab.active-farmer {
+            background: linear-gradient(135deg, #4a7c43 0%, #2d5a27 100%);
+            color: white;
+        }
+        
+        .role-tab.active-restaurant {
+            background: linear-gradient(135deg, #e67e22 0%, #d35400 100%);
+            color: white;
+        }
+        
+        .auth-form .form-group {
+            margin-bottom: 1.25rem;
+        }
+        
+        .auth-form label {
+            display: block;
+            font-weight: 600;
+            color: #555;
+            margin-bottom: 0.5rem;
+        }
+        
+        .auth-form input,
+        .auth-form select {
+            width: 100%;
+            padding: 0.85rem 1rem;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        
+        .auth-form input:focus,
+        .auth-form select:focus {
+            outline: none;
+            border-color: #4a7c43;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        
+        .btn-register-farmer {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, #4a7c43 0%, #2d5a27 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-register-restaurant {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, #e67e22 0%, #d35400 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-register-farmer:hover,
+        .btn-register-restaurant:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .auth-footer {
+            text-align: center;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #eee;
+        }
+        
+        .auth-footer p {
+            color: #666;
+        }
+        
+        .auth-footer a {
+            color: #4a7c43;
+            font-weight: 600;
+            text-decoration: none;
+        }
+        
+        .alert {
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+        }
+        
+        .alert-warning {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffc107;
+        }
+        
+        .alert-danger {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #28a745;
+        }
+        
+        .terms-group {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+        }
+        
+        .terms-group input[type="checkbox"] {
+            width: auto;
+            margin-top: 0.25rem;
+        }
+        
+        .terms-group label {
+            font-weight: normal;
+            font-size: 0.9rem;
+        }
+        
+        .error-list {
+            color: #dc3545;
+            font-size: 0.85rem;
+            margin-top: 0.25rem;
+        }
+        
+        @media (max-width: 500px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            .auth-card {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="logo">
+            🌾 Agri<span>Connect</span>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'login' %}">Login</a></li>
+                <li><a href="{% url 'register' %}">Register</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="auth-container">
+        <div class="auth-card">
+            <div class="auth-header">
+                <div class="icon">📝</div>
+                <h1>Create Account</h1>
+                <p>Join AgriConnect today!</p>
+            </div>
+
+            <!-- Display messages -->
+            {% if messages %} {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">
+                {{ message }}
+            </div>
+            {% endfor %} {% endif %} {% if email_exists %}
+            <div class="alert alert-warning">
+                ⚠️ This email is already registered. <a href="{% url 'login' %}">Login instead</a>
+            </div>
+            {% endif %}
+
+            <!-- Role Selection Tabs -->
+            <div class="role-tabs">
+                <a href="{% url 'register_farmer' %}" class="role-tab {% if role == 'farmer' %}active-farmer{% endif %}">
+                    👨‍🌾 Farmer
+                </a>
+                <a href="{% url 'register_restaurant' %}" class="role-tab {% if role == 'restaurant' %}active-restaurant{% endif %}">
+                    🍽️ Restaurant
+                </a>
+            </div>
+
+            {% if role == 'farmer' %}
+            <!-- Farmer Registration Form -->
+            <form class="auth-form" method="post" action="{% url 'register_farmer' %}">
+                {% csrf_token %}
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="first_name">First Name *</label>
+                        <input type="text" id="first_name" name="first_name" placeholder="Enter first name" value="{{ form.first_name.value|default:'' }}" required> {% if form.first_name.errors %}
+                        <div class="error-list">{{ form.first_name.errors.0 }}</div>{% endif %}
+                    </div>
+                    <div class="form-group">
+                        <label for="last_name">Last Name *</label>
+                        <input type="text" id="last_name" name="last_name" placeholder="Enter last name" value="{{ form.last_name.value|default:'' }}" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email Address *</label>
+                    <input type="email" id="email" name="email" placeholder="farmer@example.com" value="{{ form.email.value|default:'' }}" required> {% if form.email.errors %}
+                    <div class="error-list">{{ form.email.errors.0 }}</div>{% endif %}
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Phone Number *</label>
+                    <input type="tel" id="phone" name="phone" placeholder="+91 98765 43210" value="{{ form.phone.value|default:'' }}" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="farm_name">Farm Name</label>
+                    <input type="text" id="farm_name" name="farm_name" placeholder="Your farm name" value="{{ form.farm_name.value|default:'' }}">
+                </div>
+
+                <div class="form-group">
+                    <label for="location">Farm Location *</label>
+                    <input type="text" id="location" name="location" placeholder="Village, District, State" value="{{ form.location.value|default:'' }}" required>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="password1">Password *</label>
+                        <input type="password" id="password1" name="password1" placeholder="Min. 8 characters" minlength="8" required> {% if form.password1.errors %}
+                        <div class="error-list">{{ form.password1.errors.0 }}</div>{% endif %}
+                    </div>
+                    <div class="form-group">
+                        <label for="password2">Confirm Password *</label>
+                        <input type="password" id="password2" name="password2" placeholder="Confirm password" required> {% if form.password2.errors %}
+                        <div class="error-list">{{ form.password2.errors.0 }}</div>{% endif %}
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-register-farmer">🌱 Register as Farmer</button>
+            </form>
+            {% else %}
+            <!-- Restaurant Registration Form -->
+            <form class="auth-form" method="post" action="{% url 'register_restaurant' %}">
+                {% csrf_token %}
+
+                <div class="form-group">
+                    <label for="restaurant_name">Restaurant Name *</label>
+                    <input type="text" id="restaurant_name" name="restaurant_name" placeholder="Your restaurant name" value="{{ form.restaurant_name.value|default:'' }}" required>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="owner_name">Owner Name *</label>
+                        <input type="text" id="owner_name" name="owner_name" placeholder="Owner's full name" value="{{ form.owner_name.value|default:'' }}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="restaurant_type">Restaurant Type *</label>
+                        <select id="restaurant_type" name="restaurant_type" required>
+                            <option value="">Select type</option>
+                            <option value="fine-dining">Fine Dining</option>
+                            <option value="casual">Casual Dining</option>
+                            <option value="cafe">Cafe</option>
+                            <option value="fast-food">Fast Food</option>
+                            <option value="catering">Catering Service</option>
+                            <option value="hotel">Hotel Restaurant</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email Address *</label>
+                    <input type="email" id="email" name="email" placeholder="restaurant@example.com" value="{{ form.email.value|default:'' }}" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Phone Number *</label>
+                    <input type="tel" id="phone" name="phone" placeholder="+91 98765 43210" value="{{ form.phone.value|default:'' }}" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="address">Restaurant Address *</label>
+                    <input type="text" id="address" name="address" placeholder="Full address with pincode" value="{{ form.address.value|default:'' }}" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="gst_number">GST Number (Optional)</label>
+                    <input type="text" id="gst_number" name="gst_number" placeholder="22AAAAA0000A1Z5" value="{{ form.gst_number.value|default:'' }}">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="password1">Password *</label>
+                        <input type="password" id="password1" name="password1" placeholder="Min. 8 characters" minlength="8" required> {% if form.password1.errors %}
+                        <div class="error-list">{{ form.password1.errors.0 }}</div>{% endif %}
+                    </div>
+                    <div class="form-group">
+                        <label for="password2">Confirm Password *</label>
+                        <input type="password" id="password2" name="password2" placeholder="Confirm password" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-register-restaurant">🍽️ Register as Restaurant</button>
+            </form>
+            {% endif %}
+
+            <div class="auth-footer">
+                <p>Already have an account? <a href="{% url 'login' %}">Login here</a></p>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

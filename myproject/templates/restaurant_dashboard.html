@@ -1,0 +1,628 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurant Dashboard - AgriConnect</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5dc;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #2d5a27 0%, #4a7c43 100%);
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .logo span {
+            color: #90ee90;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+        
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+        
+        nav a:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .btn-logout {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        main {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        
+        .welcome-section {
+            background: white;
+            padding: 1.5rem 2rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            border-left: 5px solid #e67e22;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .welcome-section h1 {
+            color: #2d5a27;
+            margin-bottom: 0.5rem;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card h2 {
+            color: #2d5a27;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #90ee90;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            border-top: 4px solid #4a7c43;
+        }
+        
+        .stat-card.orange {
+            border-top-color: #e67e22;
+        }
+        
+        .stat-card.blue {
+            border-top-color: #3498db;
+        }
+        
+        .stat-card h3 {
+            font-size: 2rem;
+            color: #2d5a27;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-card p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .filter-section {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+        }
+        
+        .filter-section h3 {
+            color: #555;
+            margin-bottom: 1rem;
+            font-size: 1rem;
+        }
+        
+        .filter-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+            align-items: end;
+        }
+        
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .filter-group label {
+            font-weight: 600;
+            color: #555;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+        
+        .filter-group select,
+        .filter-group input {
+            padding: 0.6rem 1rem;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 0.95rem;
+        }
+        
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .btn-request {
+            background: linear-gradient(135deg, #e67e22 0%, #d35400 100%);
+            color: white;
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+        }
+        
+        .btn-request:hover {
+            transform: translateY(-1px);
+        }
+        
+        .btn-filter {
+            background: #6c757d;
+            color: white;
+            padding: 0.6rem 1.2rem;
+            font-size: 0.95rem;
+        }
+        
+        .table-container {
+            overflow-x: auto;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+        
+        th,
+        td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        th {
+            background: #f8f9fa;
+            color: #2d5a27;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+        }
+        
+        tr:hover {
+            background: #f5f5f5;
+        }
+        
+        .status {
+            padding: 0.35rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+        
+        .status-available {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .status-low {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .status-out {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .order-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .order-accepted {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .order-rejected {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        footer {
+            background: #2d5a27;
+            color: white;
+            text-align: center;
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .alert {
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+        
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .alert-danger {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .empty-message {
+            text-align: center;
+            padding: 2rem;
+            color: #666;
+        }
+        /* Request Modal */
+        
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+        
+        .modal-content {
+            background-color: white;
+            margin: 15% auto;
+            padding: 2rem;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 400px;
+        }
+        
+        .modal-content h3 {
+            margin-bottom: 1rem;
+            color: #2d5a27;
+        }
+        
+        .modal-content input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+        
+        .modal-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .btn-cancel {
+            background: #6c757d;
+            color: white;
+            flex: 1;
+        }
+        
+        .btn-confirm {
+            background: #e67e22;
+            color: white;
+            flex: 1;
+        }
+        
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 1rem;
+            }
+            .filter-grid {
+                grid-template-columns: 1fr;
+            }
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="logo">
+            🌾 Agri<span>Connect</span>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'restaurant_dashboard' %}">My Dashboard</a></li>
+                <li><a href="#" class="btn-logout" onclick="showLogoutModal()">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Display messages -->
+        {% if messages %} {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">
+            {{ message }}
+        </div>
+        {% endfor %} {% endif %}
+
+        <section class="welcome-section">
+            <h1>🍽️ Welcome, {{ request.user.restaurant_profile.restaurant_name }}!</h1>
+            <p>Browse fresh produce from local farmers and request supplies directly.</p>
+        </section>
+
+        <!-- Quick Stats -->
+        <section class="stats-grid">
+            <div class="stat-card">
+                <h3>{{ total_farmers }}</h3>
+                <p>Available Farmers</p>
+            </div>
+            <div class="stat-card orange">
+                <h3>{{ total_produce }}</h3>
+                <p>Fresh Produce Items</p>
+            </div>
+            <div class="stat-card blue">
+                <h3>{{ pending_orders }}</h3>
+                <p>Pending Orders</p>
+            </div>
+        </section>
+
+        <!-- Section: Profile Information -->
+        <section class="card">
+            <h2>👤 My Restaurant Profile</h2>
+            <div class="profile-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
+                <div class="profile-item">
+                    <label style="font-weight: 600; color: #555; font-size: 0.85rem; text-transform: uppercase;">Restaurant Name</label>
+                    <p style="font-size: 1.1rem; color: #333; margin-top: 0.25rem;">🍽️ {{ request.user.restaurant_profile.restaurant_name }}</p>
+                </div>
+                <div class="profile-item">
+                    <label style="font-weight: 600; color: #555; font-size: 0.85rem; text-transform: uppercase;">Owner Name</label>
+                    <p style="font-size: 1.1rem; color: #333; margin-top: 0.25rem;">{{ request.user.first_name }}</p>
+                </div>
+                <div class="profile-item">
+                    <label style="font-weight: 600; color: #555; font-size: 0.85rem; text-transform: uppercase;">Restaurant Type</label>
+                    <p style="font-size: 1.1rem; color: #333; margin-top: 0.25rem;">{{ request.user.restaurant_profile.get_restaurant_type_display }}</p>
+                </div>
+                <div class="profile-item">
+                    <label style="font-weight: 600; color: #555; font-size: 0.85rem; text-transform: uppercase;">Email Address</label>
+                    <p style="font-size: 1.1rem; color: #333; margin-top: 0.25rem;">{{ request.user.email }}</p>
+                </div>
+                <div class="profile-item">
+                    <label style="font-weight: 600; color: #555; font-size: 0.85rem; text-transform: uppercase;">Phone Number</label>
+                    <p style="font-size: 1.1rem; color: #333; margin-top: 0.25rem;">{{ request.user.phone|default:"Not provided" }}</p>
+                </div>
+                <div class="profile-item">
+                    <label style="font-weight: 600; color: #555; font-size: 0.85rem; text-transform: uppercase;">Address</label>
+                    <p style="font-size: 1.1rem; color: #333; margin-top: 0.25rem;">📍 {{ request.user.restaurant_profile.address }}</p>
+                </div>
+                <div class="profile-item">
+                    <label style="font-weight: 600; color: #555; font-size: 0.85rem; text-transform: uppercase;">GST Number</label>
+                    <p style="font-size: 1.1rem; color: #333; margin-top: 0.25rem;">{{ request.user.restaurant_profile.gst_number|default:"Not provided" }}</p>
+                </div>
+                <div class="profile-item">
+                    <label style="font-weight: 600; color: #555; font-size: 0.85rem; text-transform: uppercase;">Member Since</label>
+                    <p style="font-size: 1.1rem; color: #333; margin-top: 0.25rem;">{{ request.user.date_joined|date:"F d, Y" }}</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section: Available Produce -->
+        <section class="card">
+            <h2>🥬 Available Produce from Farmers</h2>
+
+            <!-- Available Produce Table -->
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Farmer Name</th>
+                            <th>Produce</th>
+                            <th>Price (₹/kg)</th>
+                            <th>Quantity (kg)</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for produce in available_produce %}
+                        <tr>
+                            <td>👨‍🌾 {{ produce.farmer.first_name }} {{ produce.farmer.last_name }}</td>
+                            <td>{{ produce.name }}</td>
+                            <td>₹{{ produce.price_per_kg }}</td>
+                            <td>{{ produce.quantity }}</td>
+                            <td>
+                                {% if produce.status == 'available' %}
+                                <span class="status status-available">In Stock</span> {% elif produce.status == 'pending' %}
+                                <span class="status status-low">Low Stock</span> {% else %}
+                                <span class="status status-out">Out of Stock</span> {% endif %}
+                            </td>
+                            <td>
+                                {% if produce.quantity > 0 %}
+                                <button class="btn btn-request" onclick="openModal({{ produce.id }}, '{{ produce.name }}', {{ produce.quantity }}, {{ produce.price_per_kg }})">
+                                    📦 Request Supply
+                                </button> {% else %}
+                                <button class="btn btn-request" disabled style="opacity: 0.5; cursor: not-allowed;">
+                                    📦 Unavailable
+                                </button> {% endif %}
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="6" class="empty-message">No produce available at the moment. Check back later!</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Section: My Orders -->
+        <section class="card">
+            <h2>📋 My Orders</h2>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Farmer</th>
+                            <th>Produce</th>
+                            <th>Quantity (kg)</th>
+                            <th>Total (₹)</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for order in my_orders %}
+                        <tr>
+                            <td>#ORD-{{ order.id }}</td>
+                            <td>👨‍🌾 {{ order.farmer.first_name }}</td>
+                            <td>{{ order.produce.name }}</td>
+                            <td>{{ order.quantity_requested }}</td>
+                            <td>₹{{ order.total_price }}</td>
+                            <td>
+                                {% if order.status == 'pending' %}
+                                <span class="status order-pending">⏳ Pending</span> {% elif order.status == 'accepted' %}
+                                <span class="status order-accepted">✓ Accepted</span> {% else %}
+                                <span class="status order-rejected">✗ Rejected</span> {% endif %}
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="6" class="empty-message">No orders yet. Request supplies from farmers above!</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <!-- Request Modal -->
+    <div id="requestModal" class="modal">
+        <div class="modal-content">
+            <h3>📦 Request Supply</h3>
+            <p id="modal-produce-info"></p>
+            <form id="request-form" method="post" action="">
+                {% csrf_token %}
+                <input type="number" id="request-quantity" name="quantity" placeholder="Enter quantity (kg)" min="1" step="0.01" required>
+                <p id="modal-total" style="font-weight: bold; margin-bottom: 1rem;"></p>
+                <div class="modal-buttons">
+                    <button type="button" class="btn btn-cancel" onclick="closeModal()">Cancel</button>
+                    <button type="submit" class="btn btn-confirm">Confirm Request</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <footer>
+        <p>🌾 AgriConnect - Bridging Farmers and Restaurants | © 2026 All Rights Reserved</p>
+    </footer>
+
+    <script>
+        let currentPrice = 0;
+
+        function openModal(produceId, produceName, maxQty, price) {
+            document.getElementById('requestModal').style.display = 'block';
+            document.getElementById('modal-produce-info').textContent = `${produceName} - ₹${price}/kg (Max: ${maxQty} kg)`;
+            document.getElementById('request-form').action = `/restaurant/request/${produceId}/`;
+            document.getElementById('request-quantity').max = maxQty;
+            currentPrice = price;
+            updateTotal();
+        }
+
+        function closeModal() {
+            document.getElementById('requestModal').style.display = 'none';
+        }
+
+        function updateTotal() {
+            const qty = document.getElementById('request-quantity').value || 0;
+            const total = (qty * currentPrice).toFixed(2);
+            document.getElementById('modal-total').textContent = `Total: ₹${total}`;
+        }
+
+        document.getElementById('request-quantity').addEventListener('input', updateTotal);
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            if (event.target == document.getElementById('requestModal')) {
+                closeModal();
+            }
+            if (event.target == document.getElementById('logoutModal')) {
+                closeLogoutModal();
+            }
+        }
+
+        // Logout modal functions
+        function showLogoutModal() {
+            document.getElementById('logoutModal').style.display = 'block';
+        }
+
+        function closeLogoutModal() {
+            document.getElementById('logoutModal').style.display = 'none';
+        }
+    </script>
+
+    <!-- Logout Confirmation Modal -->
+    <div id="logoutModal" style="display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5);">
+        <div style="background-color: white; margin: 15% auto; padding: 2rem; border-radius: 15px; width: 90%; max-width: 400px; text-align: center; box-shadow: 0 10px 40px rgba(0,0,0,0.3);">
+            <div style="font-size: 3rem; margin-bottom: 1rem;">👋</div>
+            <h3 style="color: #2d5a27; margin-bottom: 0.5rem;">Logging Out?</h3>
+            <p style="color: #666; margin-bottom: 1.5rem;">Are you sure you want to logout from AgriConnect?</p>
+            <div style="display: flex; gap: 1rem; justify-content: center;">
+                <button onclick="closeLogoutModal()" style="padding: 0.75rem 1.5rem; border: 2px solid #ddd; background: white; border-radius: 8px; font-size: 1rem; cursor: pointer; font-weight: 600;">Cancel</button>
+                <a href="{% url 'logout' %}" style="padding: 0.75rem 1.5rem; background: linear-gradient(135deg, #dc3545 0%, #c82333 100%); color: white; border-radius: 8px; font-size: 1rem; text-decoration: none; font-weight: 600;">Yes, Logout</a>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

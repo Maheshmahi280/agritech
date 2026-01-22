@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurant Dashboard - AgriConnect</title>
+    <style>
+        /* Reset and Base Styles */
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5dc;
+            color: #333;
+            line-height: 1.6;
+        }
+        /* Header Styles */
+        
+        header {
+            background: linear-gradient(135deg, #2d5a27 0%, #4a7c43 100%);
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .logo span {
+            color: #90ee90;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+        
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+        
+        nav a:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        /* Main Container */
+        
+        main {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        /* Welcome Section */
+        
+        .welcome-section {
+            background: white;
+            padding: 1.5rem 2rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            border-left: 5px solid #e67e22;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .welcome-section h1 {
+            color: #2d5a27;
+            margin-bottom: 0.5rem;
+        }
+        /* Card Styles */
+        
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card h2 {
+            color: #2d5a27;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #90ee90;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        /* Filter Section */
+        
+        .filter-section {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+        }
+        
+        .filter-section h3 {
+            color: #555;
+            margin-bottom: 1rem;
+            font-size: 1rem;
+        }
+        
+        .filter-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+            align-items: end;
+        }
+        
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .filter-group label {
+            font-weight: 600;
+            color: #555;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+        
+        .filter-group select,
+        .filter-group input {
+            padding: 0.6rem 1rem;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            transition: border-color 0.3s;
+        }
+        
+        .filter-group select:focus,
+        .filter-group input:focus {
+            outline: none;
+            border-color: #4a7c43;
+        }
+        /* Button Styles */
+        
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #4a7c43 0%, #2d5a27 100%);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(45, 90, 39, 0.4);
+        }
+        
+        .btn-request {
+            background: linear-gradient(135deg, #e67e22 0%, #d35400 100%);
+            color: white;
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+        }
+        
+        .btn-request:hover {
+            background: linear-gradient(135deg, #d35400 0%, #c0392b 100%);
+            transform: translateY(-1px);
+        }
+        
+        .btn-filter {
+            background: #6c757d;
+            color: white;
+            padding: 0.6rem 1.2rem;
+            font-size: 0.95rem;
+        }
+        
+        .btn-filter:hover {
+            background: #5a6268;
+        }
+        
+        .btn-clear {
+            background: transparent;
+            color: #6c757d;
+            border: 2px solid #6c757d;
+            padding: 0.5rem 1rem;
+            font-size: 0.95rem;
+        }
+        
+        .btn-clear:hover {
+            background: #6c757d;
+            color: white;
+        }
+        /* Table Styles */
+        
+        .table-container {
+            overflow-x: auto;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+        
+        th,
+        td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        th {
+            background: #f8f9fa;
+            color: #2d5a27;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+        }
+        
+        tr:hover {
+            background: #f5f5f5;
+        }
+        /* Status Badges */
+        
+        .status {
+            padding: 0.35rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+        
+        .status-available {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .status-low {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .status-out {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        /* My Orders Section */
+        
+        .order-status {
+            padding: 0.35rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+        
+        .order-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .order-accepted {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .order-rejected {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        /* Stats Cards */
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            border-top: 4px solid #4a7c43;
+        }
+        
+        .stat-card.orange {
+            border-top-color: #e67e22;
+        }
+        
+        .stat-card.blue {
+            border-top-color: #3498db;
+        }
+        
+        .stat-card h3 {
+            font-size: 2rem;
+            color: #2d5a27;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-card p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        /* Footer */
+        
+        footer {
+            background: #2d5a27;
+            color: white;
+            text-align: center;
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+        /* Responsive Design */
+        
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 1rem;
+            }
+            .filter-grid {
+                grid-template-columns: 1fr;
+            }
+            th,
+            td {
+                padding: 0.75rem 0.5rem;
+                font-size: 0.9rem;
+            }
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header with Site Name and Navigation -->
+    <header>
+        <div class="logo">
+            🌾 Agri<span>Connect</span>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="farmer_dashboard.html">Farmer Dashboard</a></li>
+                <li><a href="restaurent_dash.html">Restaurant Dashboard</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Welcome Section -->
+        <section class="welcome-section">
+            <h1>🍽️ Welcome, Restaurant Owner!</h1>
+            <p>Browse fresh produce from local farmers and request supplies directly.</p>
+        </section>
+
+        <!-- Quick Stats -->
+        <section class="stats-grid">
+            <div class="stat-card">
+                <h3>12</h3>
+                <p>Available Farmers</p>
+            </div>
+            <div class="stat-card orange">
+                <h3>48</h3>
+                <p>Fresh Produce Items</p>
+            </div>
+            <div class="stat-card blue">
+                <h3>5</h3>
+                <p>Pending Orders</p>
+            </div>
+        </section>
+
+        <!-- Section: Available Produce with Filters -->
+        <section class="card">
+            <h2>🥬 Available Produce from Farmers</h2>
+
+            <!-- Filter Section (UI Only) -->
+            <div class="filter-section">
+                <h3>🔍 Filter Produce</h3>
+                <form action="#" method="get">
+                    <div class="filter-grid">
+                        <div class="filter-group">
+                            <label for="produce-type">Produce Type</label>
+                            <select id="produce-type" name="produce_type">
+                                <option value="">All Types</option>
+                                <option value="vegetables">Vegetables</option>
+                                <option value="fruits">Fruits</option>
+                                <option value="grains">Grains</option>
+                                <option value="dairy">Dairy</option>
+                                <option value="herbs">Herbs</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label for="price-min">Min Price (₹/kg)</label>
+                            <input type="number" id="price-min" name="price_min" placeholder="0" min="0">
+                        </div>
+                        <div class="filter-group">
+                            <label for="price-max">Max Price (₹/kg)</label>
+                            <input type="number" id="price-max" name="price_max" placeholder="500" min="0">
+                        </div>
+                        <div class="filter-group">
+                            <label>&nbsp;</label>
+                            <div style="display: flex; gap: 0.5rem;">
+                                <button type="submit" class="btn btn-filter">Apply</button>
+                                <button type="reset" class="btn btn-clear">Clear</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Available Produce Table -->
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Farmer Name</th>
+                            <th>Produce</th>
+                            <th>Price (₹/kg)</th>
+                            <th>Quantity (kg)</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>👨‍🌾 Rajesh Kumar</td>
+                            <td>🍅 Tomatoes</td>
+                            <td>₹45</td>
+                            <td>150</td>
+                            <td><span class="status status-available">In Stock</span></td>
+                            <td><button class="btn btn-request">📦 Request Supply</button></td>
+                        </tr>
+                        <tr>
+                            <td>👨‍🌾 Suresh Patel</td>
+                            <td>🥔 Potatoes</td>
+                            <td>₹30</td>
+                            <td>200</td>
+                            <td><span class="status status-available">In Stock</span></td>
+                            <td><button class="btn btn-request">📦 Request Supply</button></td>
+                        </tr>
+                        <tr>
+                            <td>👩‍🌾 Lakshmi Devi</td>
+                            <td>🥕 Carrots</td>
+                            <td>₹55</td>
+                            <td>35</td>
+                            <td><span class="status status-low">Low Stock</span></td>
+                            <td><button class="btn btn-request">📦 Request Supply</button></td>
+                        </tr>
+                        <tr>
+                            <td>👨‍🌾 Amit Singh</td>
+                            <td>🧅 Onions</td>
+                            <td>₹40</td>
+                            <td>0</td>
+                            <td><span class="status status-out">Out of Stock</span></td>
+                            <td><button class="btn btn-request" disabled style="opacity: 0.5; cursor: not-allowed;">📦 Unavailable</button></td>
+                        </tr>
+                        <tr>
+                            <td>👩‍🌾 Priya Sharma</td>
+                            <td>🥬 Spinach</td>
+                            <td>₹35</td>
+                            <td>50</td>
+                            <td><span class="status status-available">In Stock</span></td>
+                            <td><button class="btn btn-request">📦 Request Supply</button></td>
+                        </tr>
+                        <tr>
+                            <td>👨‍🌾 Ramesh Yadav</td>
+                            <td>🍆 Eggplant</td>
+                            <td>₹60</td>
+                            <td>80</td>
+                            <td><span class="status status-available">In Stock</span></td>
+                            <td><button class="btn btn-request">📦 Request Supply</button></td>
+                        </tr>
+                        <tr>
+                            <td>👩‍🌾 Meena Kumari</td>
+                            <td>🌶️ Green Chillies</td>
+                            <td>₹120</td>
+                            <td>25</td>
+                            <td><span class="status status-low">Low Stock</span></td>
+                            <td><button class="btn btn-request">📦 Request Supply</button></td>
+                        </tr>
+                        <tr>
+                            <td>👨‍🌾 Vijay Reddy</td>
+                            <td>🥒 Cucumber</td>
+                            <td>₹28</td>
+                            <td>120</td>
+                            <td><span class="status status-available">In Stock</span></td>
+                            <td><button class="btn btn-request">📦 Request Supply</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Section: My Orders -->
+        <section class="card">
+            <h2>📋 My Orders</h2>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Farmer</th>
+                            <th>Produce</th>
+                            <th>Quantity (kg)</th>
+                            <th>Total (₹)</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>#ORD-001</td>
+                            <td>👨‍🌾 Rajesh Kumar</td>
+                            <td>🍅 Tomatoes</td>
+                            <td>50</td>
+                            <td>₹2,250</td>
+                            <td><span class="order-status order-pending">⏳ Pending</span></td>
+                        </tr>
+                        <tr>
+                            <td>#ORD-002</td>
+                            <td>👨‍🌾 Suresh Patel</td>
+                            <td>🥔 Potatoes</td>
+                            <td>100</td>
+                            <td>₹3,000</td>
+                            <td><span class="order-status order-pending">⏳ Pending</span></td>
+                        </tr>
+                        <tr>
+                            <td>#ORD-003</td>
+                            <td>👩‍🌾 Lakshmi Devi</td>
+                            <td>🥕 Carrots</td>
+                            <td>30</td>
+                            <td>₹1,650</td>
+                            <td><span class="order-status order-accepted">✓ Accepted</span></td>
+                        </tr>
+                        <tr>
+                            <td>#ORD-004</td>
+                            <td>👩‍🌾 Priya Sharma</td>
+                            <td>🥬 Spinach</td>
+                            <td>25</td>
+                            <td>₹875</td>
+                            <td><span class="order-status order-rejected">✗ Rejected</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>🌾 AgriConnect - Bridging Farmers and Restaurants | © 2026 All Rights Reserved</p>
+    </footer>
+</body>
+
+</html>
