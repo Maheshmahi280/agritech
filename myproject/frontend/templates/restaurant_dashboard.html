@@ -6,6 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Restaurant Dashboard - AgriConnect</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌾</text></svg>">
     <link rel="stylesheet" href="{% static 'style.css' %}">
     <style>
         * {
@@ -64,6 +65,98 @@
         
         .btn-logout {
             background: rgba(255, 255, 255, 0.2);
+        }
+        /* Profile Dropdown */
+        
+        .profile-menu {
+            position: relative;
+        }
+        
+        .btn-profile {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+            display: inline-block;
+        }
+        
+        .btn-profile:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        .profile-dropdown {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 120%;
+            background: white;
+            min-width: 350px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            overflow: hidden;
+        }
+        
+        .profile-dropdown.show {
+            display: block;
+        }
+        
+        .profile-dropdown-header {
+            background: linear-gradient(135deg, #2d5a27 0%, #4a7c43 100%);
+            color: white;
+            padding: 1.5rem;
+        }
+        
+        .profile-dropdown-header h3 {
+            margin: 0;
+            font-size: 1.2rem;
+        }
+        
+        .profile-dropdown-header p {
+            margin: 0.5rem 0 0 0;
+            opacity: 0.9;
+            font-size: 0.9rem;
+        }
+        
+        .profile-dropdown-body {
+            padding: 1rem;
+        }
+        
+        .profile-info-item {
+            padding: 0.75rem;
+            border-bottom: 1px solid #f0f0f0;
+            display: flex;
+            align-items: start;
+            gap: 0.75rem;
+        }
+        
+        .profile-info-item:last-child {
+            border-bottom: none;
+        }
+        
+        .profile-info-icon {
+            font-size: 1.2rem;
+        }
+        
+        .profile-info-content {
+            flex: 1;
+        }
+        
+        .profile-info-label {
+            font-size: 0.75rem;
+            color: #666;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+        
+        .profile-info-value {
+            color: #333;
+            margin-top: 0.25rem;
+            font-size: 0.95rem;
         }
         
         main {
@@ -382,6 +475,75 @@
             <ul>
                 <li><a href="{% url 'home' %}">Home</a></li>
                 <li><a href="{% url 'restaurant_dashboard' %}">My Dashboard</a></li>
+                <li class="profile-menu">
+                    <a href="#" class="btn-profile" onclick="toggleProfileDropdown(event)">
+                        👤 Profile ▼
+                    </a>
+                    <div class="profile-dropdown" id="profileDropdown">
+                        <div class="profile-dropdown-header">
+                            <h3>{{ request.user.first_name }} {{ request.user.last_name }}</h3>
+                            <p>🍽️ Restaurant Account</p>
+                        </div>
+                        <div class="profile-dropdown-body">
+                            <div class="profile-info-item">
+                                <div class="profile-info-icon">👤</div>
+                                <div class="profile-info-content">
+                                    <div class="profile-info-label">Username</div>
+                                    <div class="profile-info-value">{{ request.user.username }}</div>
+                                </div>
+                            </div>
+                            <div class="profile-info-item">
+                                <div class="profile-info-icon">📧</div>
+                                <div class="profile-info-content">
+                                    <div class="profile-info-label">Email</div>
+                                    <div class="profile-info-value">{{ request.user.email }}</div>
+                                </div>
+                            </div>
+                            <div class="profile-info-item">
+                                <div class="profile-info-icon">📱</div>
+                                <div class="profile-info-content">
+                                    <div class="profile-info-label">Phone</div>
+                                    <div class="profile-info-value">{{ request.user.phone|default:"Not provided" }}</div>
+                                </div>
+                            </div>
+                            <div class="profile-info-item">
+                                <div class="profile-info-icon">🍽️</div>
+                                <div class="profile-info-content">
+                                    <div class="profile-info-label">Restaurant Name</div>
+                                    <div class="profile-info-value">{{ request.user.restaurant_profile.restaurant_name }}</div>
+                                </div>
+                            </div>
+                            <div class="profile-info-item">
+                                <div class="profile-info-icon">🏪</div>
+                                <div class="profile-info-content">
+                                    <div class="profile-info-label">Restaurant Type</div>
+                                    <div class="profile-info-value">{{ request.user.restaurant_profile.get_restaurant_type_display }}</div>
+                                </div>
+                            </div>
+                            <div class="profile-info-item">
+                                <div class="profile-info-icon">📍</div>
+                                <div class="profile-info-content">
+                                    <div class="profile-info-label">Address</div>
+                                    <div class="profile-info-value">{{ request.user.restaurant_profile.address }}</div>
+                                </div>
+                            </div>
+                            <div class="profile-info-item">
+                                <div class="profile-info-icon">🧾</div>
+                                <div class="profile-info-content">
+                                    <div class="profile-info-label">GST Number</div>
+                                    <div class="profile-info-value">{{ request.user.restaurant_profile.gst_number|default:"Not provided" }}</div>
+                                </div>
+                            </div>
+                            <div class="profile-info-item">
+                                <div class="profile-info-icon">📅</div>
+                                <div class="profile-info-content">
+                                    <div class="profile-info-label">Member Since</div>
+                                    <div class="profile-info-value">{{ request.user.date_joined|date:"F d, Y" }}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
                 <li><a href="#" class="btn-logout" onclick="showLogoutModal()">Logout</a></li>
             </ul>
         </nav>
@@ -609,6 +771,22 @@
         function closeLogoutModal() {
             document.getElementById('logoutModal').style.display = 'none';
         }
+
+        function toggleProfileDropdown(event) {
+            event.preventDefault();
+            const dropdown = document.getElementById('profileDropdown');
+            dropdown.classList.toggle('show');
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            if (!event.target.closest('.profile-menu')) {
+                const dropdown = document.getElementById('profileDropdown');
+                if (dropdown && dropdown.classList.contains('show')) {
+                    dropdown.classList.remove('show');
+                }
+            }
+        });
     </script>
 
     <!-- Logout Confirmation Modal -->
