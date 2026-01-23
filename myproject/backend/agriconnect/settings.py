@@ -4,6 +4,7 @@ Django settings for AgriConnect project.
 
 import os
 from pathlib import Path
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -13,9 +14,16 @@ PROJECT_ROOT = BASE_DIR.parent  # Points to myproject
 SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-agriconnect-hackathon-2026-secret-key-change-in-production')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DEBUG', 'True') == 'True'
+DEBUG = os.environ.get('DEBUG', 'True').lower() in ('true', '1', 'yes')
 
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1,.vercel.app,.railway.app,.render.com,.herokuapp.com').split(',')
+# Render.com sets RENDER env variable
+IS_RENDER = 'RENDER' in os.environ
+
+ALLOWED_HOSTS = []
+RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
+if RENDER_EXTERNAL_HOSTNAME:
+    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
+ALLOWED_HOSTS += os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1,.render.com').split(',')
 
 # Application definition
 INSTALLED_APPS = [
@@ -59,13 +67,22 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'agriconnect.wsgi.application'
 
-# Database
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+# Database - Use PostgreSQL in production (Render), SQLite for local dev
+if os.environ.get('DATABASE_URL'):
+    DATABASES = {
+        'default': dj_database_url.config(
+            default=os.environ.get('DATABASE_URL'),
+            conn_max_age=600,
+            conn_health_checks=True,
+        )
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
@@ -104,7 +121,14 @@ STATICFILES_DIRS = [PROJECT_ROOT / 'frontend' / 'static']
 STATIC_ROOT = PROJECT_ROOT / 'staticfiles'
 
 # WhiteNoise for static files in production
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STORAGES = {
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
 
 # Login settings
 LOGIN_URL = '/login/'
@@ -126,8 +150,16 @@ MESSAGE_TAGS = {
 
 # CSRF Trusted Origins (for production)
 CSRF_TRUSTED_ORIGINS = [
-    'https://*.vercel.app',
-    'https://*.railway.app',
     'https://*.render.com',
-    'https://*.herokuapp.com',
 ]
+if RENDER_EXTERNAL_HOSTNAME:
+    CSRF_TRUSTED_ORIGINS.append(f'https://{RENDER_EXTERNAL_HOSTNAME}')
+
+# Security settings for production
+if not DEBUG:
+    SECURE_SSL_REDIRECT = True
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    SECURE_HSTS_SECONDS = 31536000
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True

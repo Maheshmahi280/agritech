@@ -1,0 +1,27 @@
+# Render.com Blueprint for AgriConnect
+# https://render.com/docs/blueprint-spec
+
+services:
+  - type: web
+    name: agriconnect
+    runtime: python
+    plan: free
+    buildCommand: "./build.sh"
+    startCommand: "cd backend && gunicorn agriconnect.wsgi:application"
+    envVars:
+      - key: DEBUG
+        value: "False"
+      - key: SECRET_KEY
+        generateValue: true
+      - key: PYTHON_VERSION
+        value: "3.11.0"
+      - key: DATABASE_URL
+        fromDatabase:
+          name: agriconnect-db
+          property: connectionString
+
+databases:
+  - name: agriconnect-db
+    plan: free
+    databaseName: agriconnect
+    user: agriconnect_user

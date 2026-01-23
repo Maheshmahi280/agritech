@@ -1,1 +1,1 @@
-web: gunicorn agriconnect.wsgi --log-file -
+web: cd backend && gunicorn agriconnect.wsgi:application --log-file -
