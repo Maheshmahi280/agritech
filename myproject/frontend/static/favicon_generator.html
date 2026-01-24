@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Favicon Generator</title>
+</head>
+
+<body>
+    <canvas id="canvas" width="32" height="32" style="border: 1px solid black;"></canvas>
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+
+        // Fill background with green
+        ctx.fillStyle = '#4CAF50';
+        ctx.fillRect(0, 0, 32, 32);
+
+        // Add plant emoji-like design
+        ctx.fillStyle = '#2E7D32';
+        ctx.font = '20px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText('🌱', 16, 22);
+
+        // Convert to data URL
+        const dataURL = canvas.toDataURL('image/png');
+        console.log('Favicon data URL:', dataURL);
+
+        // Create download link
+        const link = document.createElement('a');
+        link.download = 'favicon.png';
+        link.href = dataURL;
+        link.textContent = 'Download Favicon';
+        document.body.appendChild(link);
+    </script>
+    <p>Right-click the canvas and "Save image as..." to save as favicon.ico or favicon.png</p>
+</body>
+
+</html>
