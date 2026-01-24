@@ -1,2 +1,1 @@
-release: cd backend && python manage.py migrate --no-input
-web: cd backend && gunicorn agriconnect.wsgi:application --log-file -
+web: cd backend && python manage.py migrate && gunicorn agriconnect.wsgi:application --log-file -
