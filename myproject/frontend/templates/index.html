@@ -185,9 +185,9 @@
             </div>
             <nav>
                 <ul>
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="login.html">Login</a></li>
-                    <li><a href="register.html">Register</a></li>
+                    <li><a href="{% url 'home' %}">Home</a></li>
+                    <li><a href="{% url 'login' %}">Login</a></li>
+                    <li><a href="{% url 'register' %}">Register</a></li>
                 </ul>
             </nav>
         </header>
@@ -202,7 +202,7 @@
                     <div class="role-icon">👨‍🌾</div>
                     <h2>I'm a Farmer</h2>
                     <p>List your fresh produce and connect with restaurants in your area. Get fair prices for your hard work.</p>
-                    <a href="register.html?role=farmer" class="btn btn-farmer">Register as Farmer</a>
+                    <a href="{% url 'register_farmer' %}" class="btn btn-farmer">Register as Farmer</a>
                 </div>
 
                 <!-- Restaurant Card -->
@@ -210,11 +210,11 @@
                     <div class="role-icon">🍽️</div>
                     <h2>I'm a Restaurant</h2>
                     <p>Source fresh, local ingredients directly from farmers. Quality produce at competitive prices.</p>
-                    <a href="register.html?role=restaurant" class="btn btn-restaurant">Register as Restaurant</a>
+                    <a href="{% url 'register_restaurant' %}" class="btn btn-restaurant">Register as Restaurant</a>
                 </div>
             </div>
 
-            <p class="login-prompt">Already have an account? <a href="login.html">Login here</a></p>
+            <p class="login-prompt">Already have an account? <a href="{% url 'login' %}">Login here</a></p>
         </div>
     </section>
 
