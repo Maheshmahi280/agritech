@@ -271,7 +271,8 @@
             </div>
 
             <!-- Farmer Registration Form -->
-            <form class="auth-form" id="farmer-form" action="farmer_dashboard.html" method="get">
+            <form class="auth-form" id="farmer-form" method="POST" action="{% url 'register_farmer' %}">
+                {% csrf_token %}
                 <input type="hidden" name="role" value="farmer">
 
                 <div class="form-row">
@@ -325,7 +326,8 @@
             </form>
 
             <!-- Restaurant Registration Form (Hidden by default) -->
-            <form class="auth-form" id="restaurant-form" action="restaurent_dash.html" method="get" style="display: none;">
+            <form class="auth-form" id="restaurant-form" method="POST" action="{% url 'register_restaurant' %}" style="display: none;">
+                {% csrf_token %}
                 <input type="hidden" name="role" value="restaurant">
 
                 <div class="form-group">

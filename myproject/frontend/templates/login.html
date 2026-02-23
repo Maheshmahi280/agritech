@@ -307,7 +307,8 @@
             </div>
 
             <!-- Farmer Login Form -->
-            <form class="auth-form" id="farmer-login-form">
+            <form class="auth-form" id="farmer-login-form" method="POST" action="{% url 'login' %}">
+                {% csrf_token %}
                 <div class="form-group">
                     <label for="farmer-email">Email Address</label>
                     <input type="email" id="farmer-email" name="email" placeholder="farmer@example.com" required>
@@ -329,7 +330,8 @@
             </form>
 
             <!-- Restaurant Login Form (Hidden by default) -->
-            <form class="auth-form" id="restaurant-login-form" style="display: none;">
+            <form class="auth-form" id="restaurant-login-form" method="POST" action="{% url 'login' %}" style="display: none;">
+                {% csrf_token %}
                 <div class="form-group">
                     <label for="rest-email">Email Address</label>
                     <input type="email" id="rest-email" name="email" placeholder="restaurant@example.com" required>
